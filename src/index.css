@@ -2,41 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Climate Puzzle Design System - Eco-friendly nature theme */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Nature-inspired background colors */
+    --background: 120 20% 97%;
+    --foreground: 160 20% 15%;
 
+    /* Card colors with soft nature tones */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 160 20% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 160 20% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Forest green primary */
+    --primary: 142 71% 45%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 142 71% 35%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Sage green secondary */
+    --secondary: 84 81% 44%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Ocean blue accent */
+    --accent: 199 89% 48%;
+    --accent-foreground: 0 0% 100%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Soft nature muted tones */
+    --muted: 120 20% 95%;
+    --muted-foreground: 160 10% 45%;
+
+    /* Earth tone borders */
+    --border: 120 15% 88%;
+    --input: 120 15% 88%;
+    --ring: 142 71% 45%;
+
+    /* Success/reward colors */
+    --success: 84 81% 44%;
+    --success-foreground: 0 0% 100%;
+
+    /* Warning colors */
+    --warning: 43 74% 66%;
+    --warning-foreground: 160 20% 15%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --radius: 1rem;
 
-    --radius: 0.5rem;
+    /* Custom gradients */
+    --gradient-nature: linear-gradient(135deg, hsl(142 71% 45%) 0%, hsl(199 89% 48%) 100%);
+    --gradient-forest: linear-gradient(135deg, hsl(142 71% 45%) 0%, hsl(84 81% 44%) 100%);
+    --gradient-ocean: linear-gradient(135deg, hsl(199 89% 48%) 0%, hsl(217 91% 60%) 100%);
+    --gradient-earth: linear-gradient(135deg, hsl(120 20% 95%) 0%, hsl(120 15% 88%) 100%);
+
+    /* Shadows */
+    --shadow-nature: 0 10px 25px -5px hsl(142 71% 45% / 0.1), 0 4px 6px -2px hsl(142 71% 45% / 0.05);
+    --shadow-soft: 0 4px 6px -1px hsl(160 20% 15% / 0.1), 0 2px 4px -1px hsl(160 20% 15% / 0.06);
+
+    /* Animations */
+    --transition-nature: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --bounce-gentle: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 0 0% 98%;
 
@@ -101,5 +129,44 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+@layer components {
+  .btn-nature {
+    @apply bg-gradient-to-r from-primary to-accent text-white font-semibold py-3 px-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-out;
+  }
+
+  .btn-eco {
+    @apply bg-gradient-to-r from-secondary to-primary text-white font-semibold py-2 px-4 rounded-xl shadow-md hover:shadow-lg transform hover:scale-102 transition-all duration-200;
+  }
+
+  .card-puzzle {
+    @apply bg-white rounded-3xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 overflow-hidden border border-border/50;
+  }
+
+  .gradient-nature {
+    background: var(--gradient-nature);
+  }
+
+  .gradient-forest {
+    background: var(--gradient-forest);
+  }
+
+  .gradient-ocean {
+    background: var(--gradient-ocean);
+  }
+
+  .gradient-earth {
+    background: var(--gradient-earth);
+  }
+
+  .shadow-nature {
+    box-shadow: var(--shadow-nature);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
   }
 }
