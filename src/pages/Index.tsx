@@ -33,6 +33,10 @@ const Index = () => {
     setGameState('playing');
   };
 
+  const handleCategoryChange = (category: PuzzleCategory) => {
+    setSelectedCategory(category);
+  };
+
   const handlePuzzleComplete = (category: PuzzleCategory, points: number) => {
     setUserStats(prev => ({
       ecoPoints: prev.ecoPoints + points,
@@ -57,6 +61,7 @@ const Index = () => {
         category={selectedCategory}
         onComplete={(points) => handlePuzzleComplete(selectedCategory, points)}
         onBack={handleBackToSelection}
+        onCategoryChange={handleCategoryChange}
         userStats={userStats}
       />
     );

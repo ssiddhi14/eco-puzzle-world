@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ArrowLeft, RotateCcw, CheckCircle, Star } from "lucide-react";
+import { ArrowLeft, RotateCcw, CheckCircle, Star, Shuffle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -26,6 +26,7 @@ interface PuzzleGameProps {
   category: PuzzleCategory;
   onComplete: (points: number) => void;
   onBack: () => void;
+  onCategoryChange: (category: PuzzleCategory) => void;
   userStats: UserStats;
 }
 
@@ -56,7 +57,7 @@ const categoryData = {
   }
 };
 
-export const PuzzleGame = ({ category, onComplete, onBack, userStats }: PuzzleGameProps) => {
+export const PuzzleGame = ({ category, onComplete, onBack, onCategoryChange, userStats }: PuzzleGameProps) => {
   const [pieces, setPieces] = useState<PuzzlePiece[]>([]);
   const [progress, setProgress] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
@@ -234,6 +235,21 @@ export const PuzzleGame = ({ category, onComplete, onBack, userStats }: PuzzleGa
           </Button>
           
           <div className="flex items-center gap-4">
+            {/* Category Switcher */}
+            <div className="flex items-center gap-2">
+              <Shuffle className="w-4 h-4 text-muted-foreground" />
+              <select 
+                value={category}
+                onChange={(e) => onCategoryChange(e.target.value as PuzzleCategory)}
+                className="bg-background border border-border rounded-md px-3 py-1 text-sm"
+              >
+                <option value="forest">🌳 Forest</option>
+                <option value="ocean">🌊 Ocean</option>
+                <option value="wildlife">🐅 Wildlife</option>
+                <option value="climate">🧊 Climate</option>
+              </select>
+            </div>
+            
             <Button onClick={handleReset} variant="outline" size="sm">
               <RotateCcw className="w-4 h-4 mr-2" />
               Reset
