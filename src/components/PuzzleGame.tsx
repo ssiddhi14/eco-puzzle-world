@@ -254,7 +254,32 @@ export const PuzzleGame = ({ category, onComplete, onBack, userStats }: PuzzleGa
         </div>
 
         {/* Game Area */}
-        <div className="flex flex-col lg:flex-row gap-8 items-start justify-center">
+        <div className="flex flex-col xl:flex-row gap-8 items-start justify-center">
+          {/* Reference Image */}
+          <div className="min-w-[300px]">
+            <Card className="p-6">
+              <h3 className="font-semibold mb-4">Reference Image</h3>
+              <div className="relative">
+                <img
+                  src={currentPuzzle.image}
+                  alt={`${currentPuzzle.name} reference`}
+                  className="w-full max-w-[280px] rounded-lg shadow-md"
+                />
+                <div className="absolute inset-0 grid grid-cols-4 grid-rows-4 pointer-events-none">
+                  {Array.from({ length: 16 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="border border-white/20"
+                    />
+                  ))}
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground mt-3 text-center">
+                {currentPuzzle.name}
+              </p>
+            </Card>
+          </div>
+
           {/* Puzzle Canvas */}
           <div className="relative">
             <canvas
