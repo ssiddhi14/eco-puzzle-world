@@ -2,65 +2,65 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Climate Puzzle Design System - Eco-friendly nature theme */
+/* Mountain Shadow Color Scheme */
 
 @layer base {
   :root {
-    /* Nature-inspired background colors */
-    --background: 120 20% 97%;
-    --foreground: 160 20% 15%;
+    /* Mountain Shadow background */
+    --background: 150 22% 20%;
+    --foreground: 54 81% 83%;
 
-    /* Card colors with soft nature tones */
-    --card: 0 0% 100%;
-    --card-foreground: 160 20% 15%;
+    /* Card colors */
+    --card: 150 22% 22%;
+    --card-foreground: 54 81% 83%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 160 20% 15%;
+    --popover: 150 22% 22%;
+    --popover-foreground: 54 81% 83%;
 
-    /* Forest green primary */
-    --primary: 142 71% 45%;
-    --primary-foreground: 0 0% 100%;
-    --primary-hover: 142 71% 35%;
+    /* Autumn Leaf primary (buttons/CTA) */
+    --primary: 18 68% 52%;
+    --primary-foreground: 54 81% 83%;
+    --primary-hover: 18 68% 42%;
 
-    /* Sage green secondary */
-    --secondary: 84 81% 44%;
-    --secondary-foreground: 0 0% 100%;
+    /* Forest Green secondary */
+    --secondary: 134 25% 37%;
+    --secondary-foreground: 54 81% 83%;
 
-    /* Ocean blue accent */
-    --accent: 199 89% 48%;
-    --accent-foreground: 0 0% 100%;
+    /* Sunlit Water accent (headings) */
+    --accent: 22 70% 73%;
+    --accent-foreground: 150 22% 20%;
 
-    /* Soft nature muted tones */
-    --muted: 120 20% 95%;
-    --muted-foreground: 160 10% 45%;
+    /* Muted tones */
+    --muted: 150 22% 25%;
+    --muted-foreground: 54 50% 70%;
 
-    /* Earth tone borders */
-    --border: 120 15% 88%;
-    --input: 120 15% 88%;
-    --ring: 142 71% 45%;
+    /* Forest Green borders */
+    --border: 134 25% 37%;
+    --input: 134 25% 37%;
+    --ring: 18 68% 52%;
 
     /* Success/reward colors */
-    --success: 84 81% 44%;
-    --success-foreground: 0 0% 100%;
+    --success: 134 25% 37%;
+    --success-foreground: 54 81% 83%;
 
     /* Warning colors */
-    --warning: 43 74% 66%;
-    --warning-foreground: 160 20% 15%;
+    --warning: 22 70% 73%;
+    --warning-foreground: 150 22% 20%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 54 81% 83%;
 
     --radius: 1rem;
 
     /* Custom gradients */
-    --gradient-nature: linear-gradient(135deg, hsl(142 71% 45%) 0%, hsl(199 89% 48%) 100%);
-    --gradient-forest: linear-gradient(135deg, hsl(142 71% 45%) 0%, hsl(84 81% 44%) 100%);
-    --gradient-ocean: linear-gradient(135deg, hsl(199 89% 48%) 0%, hsl(217 91% 60%) 100%);
-    --gradient-earth: linear-gradient(135deg, hsl(120 20% 95%) 0%, hsl(120 15% 88%) 100%);
+    --gradient-nature: linear-gradient(135deg, hsl(18 68% 52%) 0%, hsl(22 70% 73%) 100%);
+    --gradient-forest: linear-gradient(135deg, hsl(134 25% 37%) 0%, hsl(18 68% 52%) 100%);
+    --gradient-ocean: linear-gradient(135deg, hsl(22 70% 73%) 0%, hsl(18 68% 52%) 100%);
+    --gradient-earth: linear-gradient(135deg, hsl(150 22% 25%) 0%, hsl(134 25% 37%) 100%);
 
     /* Shadows */
-    --shadow-nature: 0 10px 25px -5px hsl(142 71% 45% / 0.1), 0 4px 6px -2px hsl(142 71% 45% / 0.05);
-    --shadow-soft: 0 4px 6px -1px hsl(160 20% 15% / 0.1), 0 2px 4px -1px hsl(160 20% 15% / 0.06);
+    --shadow-nature: 0 10px 25px -5px hsl(18 68% 52% / 0.2), 0 4px 6px -2px hsl(18 68% 52% / 0.1);
+    --shadow-soft: 0 4px 6px -1px hsl(150 22% 10% / 0.3), 0 2px 4px -1px hsl(150 22% 10% / 0.2);
 
     /* Animations */
     --transition-nature: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

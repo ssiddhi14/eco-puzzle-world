@@ -104,13 +104,13 @@ export const PuzzleGame = ({ category, onComplete, onBack, onCategoryChange, use
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload = () => {
-      generateJigsawPieces(img);
+      generateSquarePieces(img);
       setImageLoaded(true);
     };
     img.src = currentImage;
   }, [category, currentImageIndex]);
 
-  const generateJigsawPieces = (img: HTMLImageElement) => {
+  const generateSquarePieces = (img: HTMLImageElement) => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -132,59 +132,7 @@ export const PuzzleGame = ({ category, onComplete, onBack, onCategoryChange, use
         pieceCanvas.width = PIECE_SIZE;
         pieceCanvas.height = PIECE_SIZE;
 
-        // Create jigsaw puzzle piece shape with tabs and blanks
-        const hasTopTab = row > 0 && Math.random() > 0.5;
-        const hasRightTab = col < GRID_SIZE - 1 && Math.random() > 0.5;
-        const hasBottomTab = row < GRID_SIZE - 1 && Math.random() > 0.5;
-        const hasLeftTab = col > 0 && Math.random() > 0.5;
-
-        // Create clipping path for jigsaw shape
-        pieceCtx.save();
-        pieceCtx.beginPath();
-        
-        // Start from top-left corner
-        pieceCtx.moveTo(hasLeftTab ? 20 : 0, hasTopTab ? 20 : 0);
-        
-        // Top edge with tab/blank
-        if (hasTopTab) {
-          pieceCtx.lineTo(PIECE_SIZE/2 - 15, 0);
-          pieceCtx.arc(PIECE_SIZE/2, 0, 15, Math.PI, 0, false);
-          pieceCtx.lineTo(PIECE_SIZE - (hasRightTab ? 20 : 0), 0);
-        } else {
-          pieceCtx.lineTo(PIECE_SIZE - (hasRightTab ? 20 : 0), hasTopTab ? 20 : 0);
-        }
-        
-        // Right edge with tab/blank
-        if (hasRightTab) {
-          pieceCtx.lineTo(PIECE_SIZE, PIECE_SIZE/2 - 15);
-          pieceCtx.arc(PIECE_SIZE, PIECE_SIZE/2, 15, -Math.PI/2, Math.PI/2, false);
-          pieceCtx.lineTo(PIECE_SIZE, PIECE_SIZE - (hasBottomTab ? 20 : 0));
-        } else {
-          pieceCtx.lineTo(PIECE_SIZE - (hasRightTab ? 20 : 0), PIECE_SIZE - (hasBottomTab ? 20 : 0));
-        }
-        
-        // Bottom edge with tab/blank
-        if (hasBottomTab) {
-          pieceCtx.lineTo(PIECE_SIZE/2 + 15, PIECE_SIZE);
-          pieceCtx.arc(PIECE_SIZE/2, PIECE_SIZE, 15, 0, Math.PI, false);
-          pieceCtx.lineTo(hasLeftTab ? 20 : 0, PIECE_SIZE);
-        } else {
-          pieceCtx.lineTo(hasLeftTab ? 20 : 0, PIECE_SIZE - (hasBottomTab ? 20 : 0));
-        }
-        
-        // Left edge with tab/blank
-        if (hasLeftTab) {
-          pieceCtx.lineTo(0, PIECE_SIZE/2 + 15);
-          pieceCtx.arc(0, PIECE_SIZE/2, 15, Math.PI/2, -Math.PI/2, false);
-          pieceCtx.lineTo(0, hasTopTab ? 20 : 0);
-        } else {
-          pieceCtx.lineTo(hasLeftTab ? 20 : 0, hasTopTab ? 20 : 0);
-        }
-        
-        pieceCtx.closePath();
-        pieceCtx.clip();
-
-        // Draw piece from original image
+        // Draw square piece from original image
         pieceCtx.drawImage(
           img,
           col * pieceWidth,
@@ -197,48 +145,10 @@ export const PuzzleGame = ({ category, onComplete, onBack, onCategoryChange, use
           PIECE_SIZE
         );
 
-        pieceCtx.restore();
-
         // Add border to show piece outline
-        pieceCtx.strokeStyle = '#22c55e';
+        pieceCtx.strokeStyle = 'hsl(134, 25%, 37%)'; // Forest Green border
         pieceCtx.lineWidth = 2;
-        pieceCtx.beginPath();
-        pieceCtx.moveTo(hasLeftTab ? 20 : 0, hasTopTab ? 20 : 0);
-        
-        // Repeat the same path for border
-        if (hasTopTab) {
-          pieceCtx.lineTo(PIECE_SIZE/2 - 15, 0);
-          pieceCtx.arc(PIECE_SIZE/2, 0, 15, Math.PI, 0, false);
-          pieceCtx.lineTo(PIECE_SIZE - (hasRightTab ? 20 : 0), 0);
-        } else {
-          pieceCtx.lineTo(PIECE_SIZE - (hasRightTab ? 20 : 0), hasTopTab ? 20 : 0);
-        }
-        
-        if (hasRightTab) {
-          pieceCtx.lineTo(PIECE_SIZE, PIECE_SIZE/2 - 15);
-          pieceCtx.arc(PIECE_SIZE, PIECE_SIZE/2, 15, -Math.PI/2, Math.PI/2, false);
-          pieceCtx.lineTo(PIECE_SIZE, PIECE_SIZE - (hasBottomTab ? 20 : 0));
-        } else {
-          pieceCtx.lineTo(PIECE_SIZE - (hasRightTab ? 20 : 0), PIECE_SIZE - (hasBottomTab ? 20 : 0));
-        }
-        
-        if (hasBottomTab) {
-          pieceCtx.lineTo(PIECE_SIZE/2 + 15, PIECE_SIZE);
-          pieceCtx.arc(PIECE_SIZE/2, PIECE_SIZE, 15, 0, Math.PI, false);
-          pieceCtx.lineTo(hasLeftTab ? 20 : 0, PIECE_SIZE);
-        } else {
-          pieceCtx.lineTo(hasLeftTab ? 20 : 0, PIECE_SIZE - (hasBottomTab ? 20 : 0));
-        }
-        
-        if (hasLeftTab) {
-          pieceCtx.lineTo(0, PIECE_SIZE/2 + 15);
-          pieceCtx.arc(0, PIECE_SIZE/2, 15, Math.PI/2, -Math.PI/2, false);
-          pieceCtx.lineTo(0, hasTopTab ? 20 : 0);
-        } else {
-          pieceCtx.lineTo(hasLeftTab ? 20 : 0, hasTopTab ? 20 : 0);
-        }
-        
-        pieceCtx.stroke();
+        pieceCtx.strokeRect(0, 0, PIECE_SIZE, PIECE_SIZE);
 
         newPieces.push({
           id: row * GRID_SIZE + col,
