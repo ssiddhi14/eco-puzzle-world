@@ -13,6 +13,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        'gaming': ['Press Start 2P', 'VT323', 'monospace'],
+        'retro': ['VT323', 'Press Start 2P', 'monospace'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

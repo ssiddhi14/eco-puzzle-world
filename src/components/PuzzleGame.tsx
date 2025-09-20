@@ -8,9 +8,17 @@ import { toast } from "sonner";
 
 // Import puzzle images
 import forestImage from "@/assets/forest-puzzle.jpg";
+import forestImage2 from "@/assets/forest-puzzle-2.jpg";
+import forestImage3 from "@/assets/forest-puzzle-3.jpg";
 import oceanImage from "@/assets/ocean-puzzle.jpg";
+import oceanImage2 from "@/assets/ocean-puzzle-2.jpg";
+import oceanImage3 from "@/assets/ocean-puzzle-3.jpg";
 import wildlifeImage from "@/assets/wildlife-puzzle.jpg";
+import wildlifeImage2 from "@/assets/wildlife-puzzle-2.jpg";
+import wildlifeImage3 from "@/assets/wildlife-puzzle-3.jpg";
 import climateImage from "@/assets/climate-puzzle.jpg";
+import climateImage2 from "@/assets/climate-puzzle-2.jpg";
+import climateImage3 from "@/assets/climate-puzzle-3.jpg";
 
 interface PuzzlePiece {
   id: number;
@@ -32,27 +40,43 @@ interface PuzzleGameProps {
 
 const categoryData = {
   forest: {
-    image: forestImage,
-    name: "Lush Forest",
-    fact: "🌳 Forests absorb about 2.6 billion tons of CO₂ annually, making them crucial for fighting climate change!",
+    images: [forestImage, forestImage2, forestImage3],
+    names: ["Lush Forest", "Misty Pines", "Enchanted Woods"],
+    facts: [
+      "🌳 Forests absorb about 2.6 billion tons of CO₂ annually, making them crucial for fighting climate change!",
+      "🌲 Pine forests create their own rain through transpiration, releasing moisture into the atmosphere!",
+      "🧚‍♀️ Old-growth forests are home to 80% of terrestrial biodiversity, creating magical ecosystems!"
+    ],
     points: 100
   },
   ocean: {
-    image: oceanImage,
-    name: "Ocean Depths", 
-    fact: "🌊 Oceans produce over 50% of the world's oxygen and absorb 30% of CO₂ emissions!",
+    images: [oceanImage, oceanImage2, oceanImage3],
+    names: ["Ocean Depths", "Tropical Paradise", "Coral Kingdom"], 
+    facts: [
+      "🌊 Oceans produce over 50% of the world's oxygen and absorb 30% of CO₂ emissions!",
+      "🏝️ Coral reefs support 25% of all marine species despite covering less than 1% of ocean floor!",
+      "🐠 Healthy coral reefs are like underwater rainforests, buzzing with colorful life!"
+    ],
     points: 100
   },
   wildlife: {
-    image: wildlifeImage,
-    name: "Majestic Wildlife",
-    fact: "🐅 We share our planet with over 8.7 million species, but we're losing them 1,000x faster than natural rates!",
+    images: [wildlifeImage, wildlifeImage2, wildlifeImage3],
+    names: ["Majestic Wildlife", "Tiger's Domain", "Savanna Sunset"],
+    facts: [
+      "🐅 We share our planet with over 8.7 million species, but we're losing them 1,000x faster than natural rates!",
+      "🐯 Tigers are apex predators that help maintain the balance of their ecosystems!",
+      "🐘 Elephants are ecosystem engineers, creating water holes and paths that benefit countless other species!"
+    ],
     points: 100
   },
   climate: {
-    image: climateImage,
-    name: "Climate Reality",
-    fact: "🧊 Arctic sea ice is melting at a rate of 13% per decade, affecting global weather patterns!",
+    images: [climateImage, climateImage2, climateImage3],
+    names: ["Climate Reality", "Arctic Majesty", "Melting Ice"],
+    facts: [
+      "🧊 Arctic sea ice is melting at a rate of 13% per decade, affecting global weather patterns!",
+      "❄️ The Arctic reflects sunlight back to space, but as ice melts, dark water absorbs more heat!",
+      "🐻‍❄️ Polar bears depend on sea ice for hunting, and their habitat is disappearing rapidly!"
+    ],
     points: 100
   }
 };
@@ -64,25 +88,29 @@ export const PuzzleGame = ({ category, onComplete, onBack, onCategoryChange, use
   const [draggedPiece, setDraggedPiece] = useState<number | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const GRID_SIZE = 4;
   const PIECE_SIZE = 120;
   const CANVAS_SIZE = GRID_SIZE * PIECE_SIZE;
 
   const currentPuzzle = categoryData[category];
+  const currentImage = currentPuzzle.images[currentImageIndex];
+  const currentName = currentPuzzle.names[currentImageIndex];
+  const currentFact = currentPuzzle.facts[currentImageIndex];
 
   // Initialize puzzle pieces
   useEffect(() => {
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload = () => {
-      generatePuzzlePieces(img);
+      generateJigsawPieces(img);
       setImageLoaded(true);
     };
-    img.src = currentPuzzle.image;
-  }, [category]);
+    img.src = currentImage;
+  }, [category, currentImageIndex]);
 
-  const generatePuzzlePieces = (img: HTMLImageElement) => {
+  const generateJigsawPieces = (img: HTMLImageElement) => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -104,6 +132,58 @@ export const PuzzleGame = ({ category, onComplete, onBack, onCategoryChange, use
         pieceCanvas.width = PIECE_SIZE;
         pieceCanvas.height = PIECE_SIZE;
 
+        // Create jigsaw puzzle piece shape with tabs and blanks
+        const hasTopTab = row > 0 && Math.random() > 0.5;
+        const hasRightTab = col < GRID_SIZE - 1 && Math.random() > 0.5;
+        const hasBottomTab = row < GRID_SIZE - 1 && Math.random() > 0.5;
+        const hasLeftTab = col > 0 && Math.random() > 0.5;
+
+        // Create clipping path for jigsaw shape
+        pieceCtx.save();
+        pieceCtx.beginPath();
+        
+        // Start from top-left corner
+        pieceCtx.moveTo(hasLeftTab ? 20 : 0, hasTopTab ? 20 : 0);
+        
+        // Top edge with tab/blank
+        if (hasTopTab) {
+          pieceCtx.lineTo(PIECE_SIZE/2 - 15, 0);
+          pieceCtx.arc(PIECE_SIZE/2, 0, 15, Math.PI, 0, false);
+          pieceCtx.lineTo(PIECE_SIZE - (hasRightTab ? 20 : 0), 0);
+        } else {
+          pieceCtx.lineTo(PIECE_SIZE - (hasRightTab ? 20 : 0), hasTopTab ? 20 : 0);
+        }
+        
+        // Right edge with tab/blank
+        if (hasRightTab) {
+          pieceCtx.lineTo(PIECE_SIZE, PIECE_SIZE/2 - 15);
+          pieceCtx.arc(PIECE_SIZE, PIECE_SIZE/2, 15, -Math.PI/2, Math.PI/2, false);
+          pieceCtx.lineTo(PIECE_SIZE, PIECE_SIZE - (hasBottomTab ? 20 : 0));
+        } else {
+          pieceCtx.lineTo(PIECE_SIZE - (hasRightTab ? 20 : 0), PIECE_SIZE - (hasBottomTab ? 20 : 0));
+        }
+        
+        // Bottom edge with tab/blank
+        if (hasBottomTab) {
+          pieceCtx.lineTo(PIECE_SIZE/2 + 15, PIECE_SIZE);
+          pieceCtx.arc(PIECE_SIZE/2, PIECE_SIZE, 15, 0, Math.PI, false);
+          pieceCtx.lineTo(hasLeftTab ? 20 : 0, PIECE_SIZE);
+        } else {
+          pieceCtx.lineTo(hasLeftTab ? 20 : 0, PIECE_SIZE - (hasBottomTab ? 20 : 0));
+        }
+        
+        // Left edge with tab/blank
+        if (hasLeftTab) {
+          pieceCtx.lineTo(0, PIECE_SIZE/2 + 15);
+          pieceCtx.arc(0, PIECE_SIZE/2, 15, Math.PI/2, -Math.PI/2, false);
+          pieceCtx.lineTo(0, hasTopTab ? 20 : 0);
+        } else {
+          pieceCtx.lineTo(hasLeftTab ? 20 : 0, hasTopTab ? 20 : 0);
+        }
+        
+        pieceCtx.closePath();
+        pieceCtx.clip();
+
         // Draw piece from original image
         pieceCtx.drawImage(
           img,
@@ -117,10 +197,48 @@ export const PuzzleGame = ({ category, onComplete, onBack, onCategoryChange, use
           PIECE_SIZE
         );
 
-        // Add border
+        pieceCtx.restore();
+
+        // Add border to show piece outline
         pieceCtx.strokeStyle = '#22c55e';
         pieceCtx.lineWidth = 2;
-        pieceCtx.strokeRect(0, 0, PIECE_SIZE, PIECE_SIZE);
+        pieceCtx.beginPath();
+        pieceCtx.moveTo(hasLeftTab ? 20 : 0, hasTopTab ? 20 : 0);
+        
+        // Repeat the same path for border
+        if (hasTopTab) {
+          pieceCtx.lineTo(PIECE_SIZE/2 - 15, 0);
+          pieceCtx.arc(PIECE_SIZE/2, 0, 15, Math.PI, 0, false);
+          pieceCtx.lineTo(PIECE_SIZE - (hasRightTab ? 20 : 0), 0);
+        } else {
+          pieceCtx.lineTo(PIECE_SIZE - (hasRightTab ? 20 : 0), hasTopTab ? 20 : 0);
+        }
+        
+        if (hasRightTab) {
+          pieceCtx.lineTo(PIECE_SIZE, PIECE_SIZE/2 - 15);
+          pieceCtx.arc(PIECE_SIZE, PIECE_SIZE/2, 15, -Math.PI/2, Math.PI/2, false);
+          pieceCtx.lineTo(PIECE_SIZE, PIECE_SIZE - (hasBottomTab ? 20 : 0));
+        } else {
+          pieceCtx.lineTo(PIECE_SIZE - (hasRightTab ? 20 : 0), PIECE_SIZE - (hasBottomTab ? 20 : 0));
+        }
+        
+        if (hasBottomTab) {
+          pieceCtx.lineTo(PIECE_SIZE/2 + 15, PIECE_SIZE);
+          pieceCtx.arc(PIECE_SIZE/2, PIECE_SIZE, 15, 0, Math.PI, false);
+          pieceCtx.lineTo(hasLeftTab ? 20 : 0, PIECE_SIZE);
+        } else {
+          pieceCtx.lineTo(hasLeftTab ? 20 : 0, PIECE_SIZE - (hasBottomTab ? 20 : 0));
+        }
+        
+        if (hasLeftTab) {
+          pieceCtx.lineTo(0, PIECE_SIZE/2 + 15);
+          pieceCtx.arc(0, PIECE_SIZE/2, 15, Math.PI/2, -Math.PI/2, false);
+          pieceCtx.lineTo(0, hasTopTab ? 20 : 0);
+        } else {
+          pieceCtx.lineTo(hasLeftTab ? 20 : 0, hasTopTab ? 20 : 0);
+        }
+        
+        pieceCtx.stroke();
 
         newPieces.push({
           id: row * GRID_SIZE + col,
@@ -218,6 +336,8 @@ export const PuzzleGame = ({ category, onComplete, onBack, onCategoryChange, use
     const categories: PuzzleCategory[] = ['forest', 'ocean', 'wildlife', 'climate'];
     const otherCategories = categories.filter(cat => cat !== category);
     const randomCategory = otherCategories[Math.floor(Math.random() * otherCategories.length)];
+    const randomImageIndex = Math.floor(Math.random() * categoryData[randomCategory].images.length);
+    setCurrentImageIndex(randomImageIndex);
     onCategoryChange(randomCategory);
   };
 
@@ -276,7 +396,7 @@ export const PuzzleGame = ({ category, onComplete, onBack, onCategoryChange, use
 
         {/* Puzzle Info */}
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold mb-2">{currentPuzzle.name}</h1>
+          <h1 className="text-3xl font-gaming mb-2">{currentName}</h1>
           <div className="flex items-center justify-center gap-4 mb-4">
             <Progress value={progress} className="w-64" />
             <span className="text-sm font-medium">{Math.round(progress)}%</span>
@@ -291,8 +411,8 @@ export const PuzzleGame = ({ category, onComplete, onBack, onCategoryChange, use
               <h3 className="font-semibold mb-4">Reference Image</h3>
               <div className="relative">
                 <img
-                  src={currentPuzzle.image}
-                  alt={`${currentPuzzle.name} reference`}
+                  src={currentImage}
+                  alt={`${currentName} reference`}
                   className="w-full max-w-[280px] rounded-lg shadow-md"
                 />
                 <div className="absolute inset-0 grid grid-cols-4 grid-rows-4 pointer-events-none">
@@ -304,8 +424,8 @@ export const PuzzleGame = ({ category, onComplete, onBack, onCategoryChange, use
                   ))}
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground mt-3 text-center">
-                {currentPuzzle.name}
+              <p className="text-sm text-muted-foreground mt-3 text-center font-retro">
+                {currentName}
               </p>
             </Card>
           </div>
@@ -365,15 +485,15 @@ export const PuzzleGame = ({ category, onComplete, onBack, onCategoryChange, use
             <Card className="p-8 text-center max-w-md">
               <div className="mb-6">
                 <CheckCircle className="w-16 h-16 text-success mx-auto mb-4" />
-                <h2 className="text-2xl font-bold mb-2">Puzzle Complete!</h2>
+                <h2 className="text-2xl font-gaming mb-2">Puzzle Complete!</h2>
                 <div className="flex items-center justify-center gap-2 mb-4">
                   <Star className="w-5 h-5 text-warning" />
-                  <span className="font-semibold">+{currentPuzzle.points} Eco Points</span>
+                  <span className="font-semibold font-retro">+{currentPuzzle.points} Eco Points</span>
                 </div>
               </div>
               
               <div className="bg-muted rounded-2xl p-4 mb-6">
-                <p className="text-sm font-medium">{currentPuzzle.fact}</p>
+                <p className="text-sm font-medium font-retro">{currentFact}</p>
               </div>
               
               <Button onClick={onBack} className="w-full">
