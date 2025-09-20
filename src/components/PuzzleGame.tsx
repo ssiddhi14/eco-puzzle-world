@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ArrowLeft, RotateCcw, CheckCircle, Star, Shuffle } from "lucide-react";
+import { ArrowLeft, RotateCcw, CheckCircle, Star, Shuffle, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -213,6 +213,14 @@ export const PuzzleGame = ({ category, onComplete, onBack, onCategoryChange, use
     setProgress(0);
   };
 
+  // Change to random image
+  const handleChangeImage = () => {
+    const categories: PuzzleCategory[] = ['forest', 'ocean', 'wildlife', 'climate'];
+    const otherCategories = categories.filter(cat => cat !== category);
+    const randomCategory = otherCategories[Math.floor(Math.random() * otherCategories.length)];
+    onCategoryChange(randomCategory);
+  };
+
   if (!imageLoaded) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -235,6 +243,12 @@ export const PuzzleGame = ({ category, onComplete, onBack, onCategoryChange, use
           </Button>
           
           <div className="flex items-center gap-4">
+            {/* Change Image Button */}
+            <Button onClick={handleChangeImage} variant="outline" size="sm">
+              <ImageIcon className="w-4 h-4 mr-2" />
+              Change Image
+            </Button>
+            
             {/* Category Switcher */}
             <div className="flex items-center gap-2">
               <Shuffle className="w-4 h-4 text-muted-foreground" />
